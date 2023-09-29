@@ -124,10 +124,12 @@ body {
 
 #opt-2 p {
   position: relative;
-  left: 5%;
+  left: 3%;
+  bottom: 95%;
 
 
   width: 80%;
+  padding: 10px;
 }
 
 #opt-3 {
@@ -153,8 +155,12 @@ body {
 
 #opt-4 p {
   position: relative;
-  left: 5%;
+  left: 3%;
+  bottom: 95%;
+
+
   width: 80%;
+  padding: 10px;
 }
 
 #opt-5 {

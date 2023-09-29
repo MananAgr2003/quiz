@@ -91,6 +91,9 @@ app.get("/intro4", function (req, res) {
 app.get("/intro5", function (req, res) {
   res.render("index7");
 });
+app.get("/preintro1", function (req, res) {
+  res.render("index11");
+});
 app.get("/register", function (req, res) {
   res.render("newAc");
 });
@@ -293,7 +296,7 @@ app.post("/login", function (req, res) {
         foundUser.loginPass,
         function (err, result) {
           if (result == true) {
-            res.redirect("/intro1");
+            res.redirect("/preintro1");
           } else {
             res.redirect("/login");
           }
