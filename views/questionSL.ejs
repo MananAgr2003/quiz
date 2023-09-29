@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Londrina+Solid&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style0.css">
+    <title>Quiz</title>
+</head>
+
+<body onload="redirect()">
+
+
+    <div id="nextQNum">
+        <%= ques %>
+    </div>
+
+    <div id="txt">
+        <p>Your SL Level According</p>
+        <p>To That Question Is <%= max_sl %>
+        </p>
+    </div>
+
+
+    <% if(max_sl==="SL0" ){ %>
+        <div class="sl-img"><img src="img/SL0.png" alt="" id="sl-img"></div>
+        <% } %>
+            <% if(max_sl==="SL1" ){ %>
+                <div class="sl-img"><img src="img/SL1.png" alt="" id="sl-img"></div>
+                <% } %>
+                    <% if(max_sl=="SL2" ){ %>
+                        <div class="sl-img"><img src="img/SL2.png" alt="" id="sl-img"></div>
+                        <% } %>
+                            <% if(max_sl=="SL3" ){ %>
+                                <div class="sl-img"><img src="img/SL3.png" alt="" id="sl-img"></div>
+                                <% } %>
+                                    <% if(max_sl=="SL4" ){ %>
+                                        <div class="sl-img"><img src="img/SL4.png" alt="" id="sl-img"></div>
+                                        <% } %>
+
+                                            <script>
+                                                let nextQNum = document.getElementById("nextQNum").innerHTML;
+
+
+
+                                                function redirect() {
+                                                    setTimeout(nextQuestion, 5000);
+                                                }
+
+                                                function nextQuestion() {
+
+                                                    document.location.href = `http://localhost:3000/ques?id=${nextQNum}`;
+                                                }
+
+
+                                            </script>
+</body>
+
+
+</html>

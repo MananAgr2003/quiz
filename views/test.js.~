@@ -1,0 +1,68 @@
+<!-- 
+                        <li>Question 1: <%= SLlevel[0] %>
+                        <li>
+                        <li>Question 2: <%= SLlevel[1] %> 
+                        </li>
+                        <li>Question 3: <%= SLlevel[2] %> 
+                        </li>
+                        <li>Question 4: <%= SLlevel[3] %> 
+                        </li>
+                        <li>Question 5: <%= SLlevel[4] %>
+                        </li>
+                        <li>Question 6: <%= SLlevel[5] %>
+                        </li>
+
+                        <li>Question 7: <%= SLlevel[6] %>
+                        </li>
+                        <li>Question 8: <%= SLlevel[7] %>
+                        </li>
+                        <li>Question 9: <%= SLlevel[8] %>
+                        </li>
+                        <li>Question 10: <%= SLlevel[9] %>
+                        </li>
+    
+                        <li>Question 11: <%= SLlevel[10] %>
+                        </li>
+                    </div>
+                    <div>
+                        <li>Question 12: <%= SLlevel[11] %>
+                        </li>
+                        <li>Question 13: <%= SLlevel[12] %>
+                        </li>
+                        <li>Question 14: <%= SLlevel[13] %>
+                        </li>
+                        <li>Question 15: <%= SLlevel[14] %>
+                        </li>
+                        <li>Question 16: <%= SLlevel[15] %>
+                        </li>
+                        <li>Question 17: <%= SLlevel[16] %>
+                        </li>
+                        <li>Question 18: <%= SLlevel[17] %>
+                        </li>
+                        <li>Question 19: <%= SLlevel[18] %>
+                        </li>
+                        <li>Question 20: <%= SLlevel[19] %>
+                        </li> -->
+
+
+                                <!-- <section class="SLmeter">
+
+            <h1>Final SL Meter : <%= sl %>
+            </h1>
+            <% if(sl=="SL0" ){ %>
+                <div class="sl-img"><img src="img/SL0.png" alt="" id="sl-img"></div>
+                <% } %>
+                    <% if(sl=="SL1" ){ %>
+                        <div class="sl-img"><img src="img/SL1.png" alt="" id="sl-img"></div>
+                        <% } %>
+                            <% if(sl=="SL2" ){ %>
+                                <div class="sl-img"><img src="img/SL2.png" alt="" id="sl-img"></div>
+                                <% } %>
+                                    <% if(sl=="SL3" ){ %>
+                                        <div class="sl-img"><img src="img/SL3.png" alt="" id="sl-img"></div>
+                                        <% } %>
+                                            <% if(sl=="SL4" ){ %>
+                                                <div class="sl-img"><img src="img/SL4.png" alt="" id="sl-img"></div>
+                                                <% } %>
+
+        </section> -->
