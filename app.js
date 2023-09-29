@@ -94,6 +94,9 @@ app.get("/intro5", function (req, res) {
 app.get("/preintro1", function (req, res) {
   res.render("index11");
 });
+app.get("/preintrores", function (req, res) {
+  res.render("preintrores");
+});
 app.get("/register", function (req, res) {
   res.render("newAc");
 });

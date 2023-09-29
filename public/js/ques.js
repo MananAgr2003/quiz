@@ -25,6 +25,21 @@ function green(id) {
         myOption.setAttribute('value', 'green');
     }
 }
+function pregreen(id) {
+    const myOption = document.getElementById('option'+id);
+    const optionValue = myOption.getAttribute('value');
+    const myimg = document.getElementById(`opt${id}-img`);
+    const img = myimg.getAttribute('src');
+    resetAllOptions();
+
+    if (img == 'img/preintrobox.png') {
+        myimg.setAttribute('src', 'img/preintroboxgreen.png');
+        myOption.setAttribute('value', 'grey');
+    } else {
+        myimg.setAttribute('src', 'img/preintrobox.png');
+        myOption.setAttribute('value', 'green');
+    }
+}
 
 // function green1(){
     
