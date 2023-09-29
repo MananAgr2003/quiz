@@ -221,7 +221,7 @@ app.get("/quesFinalResult", function (req, res) {
     if(foundUser){
       foundUser.options.forEach(function (option) {
         option.options.forEach(function (op) {
-          console.log(op.fr, op.sl);
+          // console.log(op.fr, op.sl);
           fr_sl_map[op.fr].push(op.sl);
         });
       });
@@ -355,12 +355,19 @@ app.post("/ques", function (req, res) {
       });
       if(+quesId == 22){
         res.redirect("/quesFinalResult");
-      }else{
+      }else if(+quesId == 102){
+        res.redirect("/preintrores");
+      }
+      else{
         // console.log("max_sl", max_sl, "quesId", +quesId+1);
         res.redirect(`/ques?id=${+quesId+1}`)
         // res.render("questionSL.ejs", { max_sl: max_sl, ques: +quesId+1 });
       }
     }
+  });
+
+  app.post("/preintrores", function (req, res) {
+    res.render("/ques?id=1");
   });
   // if (req.body.optifoundQues1 == "green") {
   //   if ("SL0" > sl) {

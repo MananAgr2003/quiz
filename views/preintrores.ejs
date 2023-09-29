@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <form action="/ques2" method="post">
+    <form action="/preintrores" method="post">
         <div class="container">
 
 
@@ -27,16 +27,16 @@
             <div class="opt" id="opt-1">
                 <input type="hidden" name="option1" id="option1" value="grey">
                 <img id="opt1-img" src="img/preintrobox.png" alt="" onclick="pregreen(1)">
-                <p onclick="pregreen(1)" style="font-size: 25px;width: 350px;">Yes</p>
+                <p onclick="pregreen(1);setOptionsVisibilty(false);" style="font-size: 25px;width: 350px;">Yes</p>
 
             </div>
             <div class="opt" id="opt-3">
                 <input type="hidden" name="option3" id="option3" value="grey">
                 <img id="opt3-img" src="img/preintrobox.png" alt="" onclick="pregreen(3)">
-                <p onclick="pregreen(3)" style="font-size: 22px;width: 150px;">No, I want to select manually</p>
+                <p onclick="pregreen(3);setOptionsVisibilty(true);" style="font-size: 22px;width: 150px;">No, I want to select manually</p>
             </div>
 
-            <div style="display: flex;flex-direction: column;">
+            <div style="display: none;flex-direction: column;" id="right-options">
                 <div class="text-box1"><img src="img/preintrores2.png" alt="" id="grp48"></div>
                 
                 <div style="position: absolute;left: 60%;top: 30%;">
@@ -78,6 +78,17 @@
 
 
     </form>
+    <script>
+        //function to change visibilty of right-options div with bool value
+        function setOptionsVisibilty(isVisible){
+            const x = document.getElementById("right-options");
+            if(isVisible){
+                x.style.display = 'flex';
+            }else {
+                x.style.display = 'none';
+            }
+        }
+    </script>
     <script src="js/ques.js"></script>
 </body>
 
