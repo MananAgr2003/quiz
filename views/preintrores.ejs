@@ -21,8 +21,21 @@
 
 
             <div class="man"><img src="img/BusinessGuy.png" alt="" id="bGuy"></div>
-            <div class="text-box"><img src="img/preintrores1.png" alt="" id="grp48"></div>
-
+            
+            <% if(predicted_sl==="SL1" ){ %>
+            <div class="text-box"><img src="img/preintrores11.png" alt=""></div>
+            <% } %>
+            <% if(predicted_sl=="SL2" ){ %>
+            <div class="text-box"><img src="img/preintrores12.png" alt=""></div>
+            <% } %>
+            <% if(predicted_sl=="SL3" ){ %>
+            <div class="text-box"><img src="img/preintrores13.png" alt=""></div>
+            <% } %>
+            <% if(predicted_sl=="SL4" ){ %>
+            <div class="text-box"><img src="img/preintrores14.png" alt=""></div>
+            <% } %>
+            <!-- <div class="text-box"><img src="img/preintrores1.png" alt="" id="grp48"></div> -->
+            <input type="hidden" name="predicted_sl" value="<%= predicted_sl %>"/>
 
             <div class="opt" id="opt-1">
                 <input type="hidden" name="option1" id="option1" value="grey">

@@ -45,6 +45,7 @@ const userSchema = mongoose.Schema({
   role: String,
   place: String,
   tsl:String,
+  predicted_sl:String,
   loginId: String,
   loginPass: String,
   options: [optionSchema],
@@ -96,7 +97,12 @@ app.get("/preintro1", function (req, res) {
   res.render("index11");
 });
 app.get("/preintrores", function (req, res) {
-  res.render("preintrores");
+  // fetch predicted_sl of current user
+  User.findOne({ loginId: loginUserName }, function (err, foundUser) {
+    if(foundUser){
+      res.render("preintrores", { predicted_sl: foundUser.predicted_sl });
+    }
+  });
 });
 app.get("/register", function (req, res) {
   res.render("newAc");
@@ -315,9 +321,9 @@ app.post("/login", function (req, res) {
 app.post("/ques", function (req, res) {
   
   const quesId = req.query.id;
+  const user_ans = [];
   Question.findOne({ id: quesId }, function (err, foundQues) {
     if (foundQues) {
-      const user_ans = [];
       if(req.body.option1 == "green"){
         user_ans.push(foundQues.options[0]);
       }
@@ -356,7 +362,29 @@ app.post("/ques", function (req, res) {
       if(+quesId == 22){
         res.redirect("/quesFinalResult");
       }else if(+quesId == 102){
-        res.redirect("/preintrores");
+        // fetch options of ques with id 100,101,102
+        User.findOne({ loginId: loginUserName }, function (err, foundUser) {
+          const sl_values = [];
+          foundUser.options.forEach(function (option) {
+            if(option.question == 100 || option.question == 101 || option.question == 102){
+              option.options.forEach(function (op) {
+                sl_values.push(op.sl);
+              });
+            }
+          });
+          sl_values.push(user_ans[0].sl)
+          sl_values.sort();
+          console.log(sl_values);
+          //save last element of sl_values to predicted_sl of current user
+          User.findOneAndUpdate(
+            { loginId: loginUserName },
+            { predicted_sl: sl_values[sl_values.length-1] },
+            function (err, fUser) {
+              res.redirect("/preintrores")
+            }
+          );
+        });
+
       }
       else{
         // console.log("max_sl", max_sl, "quesId", +quesId+1);
