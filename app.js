@@ -359,9 +359,13 @@ app.post("/ques", function (req, res) {
           foundUser.save();
         }
       });
-      if(+quesId == 22){
+      if(+quesId == 39){
         res.redirect("/quesFinalResult");
-      }else if(+quesId == 102){
+      }
+      else if(+quesId == 33){
+        res.redirect("/ques?id=35");
+      }
+      else if(+quesId == 102){
         // fetch options of ques with id 100,101,102
         User.findOne({ loginId: loginUserName }, function (err, foundUser) {
           const sl_values = [];
@@ -395,7 +399,39 @@ app.post("/ques", function (req, res) {
   });
 
   app.post("/preintrores", function (req, res) {
-    res.render("/ques?id=1");
+    if(req.body.option1 == "green"){
+      const usr_tsl = req.body.predicted_sl;
+      User.findOneAndUpdate(
+        { loginId: loginUserName },
+        { tsl: usr_tsl },
+        function (err, fUser) {
+          res.redirect("/intro1")
+        }
+      );
+    }
+    if(req.body.option3=="green"){
+      var usr_tsl = "";
+      if(req.body.SL1=="green"){
+        usr_tsl = "SL1";
+      }
+      if(req.body.SL2=="green"){
+        usr_tsl = "SL2";
+      }
+      if(req.body.SL3=="green"){
+        usr_tsl = "SL3";
+      }
+      if(req.body.SL4=="green"){
+        usr_tsl = "SL4";
+      }
+      User.findOneAndUpdate(
+        { loginId: loginUserName },
+        { tsl: usr_tsl },
+        function (err, fUser) {
+          res.redirect("/intro1")
+        }
+      );
+    }
+
   });
   // if (req.body.optifoundQues1 == "green") {
   //   if ("SL0" > sl) {
