@@ -9,6 +9,44 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Londrina+Solid&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styleResult.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        // intializing the map of FRs and SLs
+        function get_sl_values_data(){
+            var sl_values = {
+                    "SL0": 0,
+                    "SL1": 1,
+                    "SL2": 2,
+                    "SL3": 3,   
+                    "SL4": 4,
+                    "":0
+                };
+            var usr_data = [
+                sl_values["<%= fr_sl_map["FR1"][0] %>"],
+                sl_values["<%= fr_sl_map["FR2"][0] %>"],
+                sl_values["<%= fr_sl_map["FR3"][0] %>"],
+                sl_values["<%= fr_sl_map["FR4"][0] %>"],
+                sl_values["<%= fr_sl_map["FR5"][0] %>"],
+                sl_values["<%= fr_sl_map["FR6"][0] %>"],
+                sl_values["<%= fr_sl_map["FR7"][0] %>"]
+            ];
+            return usr_data;
+        }
+
+        function get_tsl_data(){
+            var sl_values = {
+                    "SL0": 0,
+                    "SL1": 1,
+                    "SL2": 2,
+                    "SL3": 3,   
+                    "SL4": 4,
+                    "":0
+            };
+            tsl_val = sl_values["<%= tsl %>"]
+            return [tsl_val,tsl_val,tsl_val,tsl_val,tsl_val,tsl_val,tsl_val]
+        }
+    </script>
+    <script src="js/radar_chart.js"></script>
     <title>Quiz</title>
 </head>
 
@@ -18,32 +56,30 @@
     <div id="txt">
         <p>Cybersecurity Analysis</p>
     </div>
-    <section class="analysis">
-        <section class="questionWiseSL">
+    <div class="analysis">
+        <div class="questionWiseSL">
+            <div class="quesResult">
+                <ul>
+                    <li>FR 1 : <%= fr_sl_map["FR1"][0] %></li>
+                    <li>FR 2 : <%= fr_sl_map["FR2"][0] %></li>
+                    <li>FR 3 : <%= fr_sl_map["FR3"][0] %></li>
+                    <li>FR 4 : <%= fr_sl_map["FR4"][0] %></li>
+                    <li>FR 5 : <%= fr_sl_map["FR5"][0] %></li>
+                    <li>FR 6 : <%= fr_sl_map["FR6"][0] %></li>
+                    <li>FR 7 : <%= fr_sl_map["FR7"][0] %></li>
+                </ul>
+            </div>
+            <div class="chart-SL" style="width: 300px;position: absolute;right:-400px">
+                <canvas id="chart-SL-canvas" style="background-color: white;"></canvas>
+            </div>
+        </div>
 
-            <ul>
-                <div class="quesResult">
-                    <div>
-                        <li>FR 1 : <%= fr_sl_map["FR1"][0] %></li>
-                        <li>FR 2 : <%= fr_sl_map["FR2"][0] %></li>
-                        <li>FR 3 : <%= fr_sl_map["FR3"][0] %></li>
-                        <li>FR 4 : <%= fr_sl_map["FR4"][0] %></li>
-                        <li>FR 5 : <%= fr_sl_map["FR5"][0] %></li>
-                        <li>FR 6 : <%= fr_sl_map["FR6"][0] %></li>
-                        <li>FR 7 : <%= fr_sl_map["FR7"][0] %></li>
-
-                    </div>
-                </div>
-            </ul>
-
-
-        </section>
-
-    </section>
+    </div>
 
     <div id="btn"><a href="/" role="button"><img src="img/Group2142.png" alt=""></a></div>
+    <script>
 
-
+    </script>
 </body>
 
 </html>

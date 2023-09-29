@@ -44,6 +44,7 @@ const userSchema = mongoose.Schema({
   company: String,
   role: String,
   place: String,
+  tsl:String,
   loginId: String,
   loginPass: String,
   options: [optionSchema],
@@ -229,7 +230,7 @@ app.get("/quesFinalResult", function (req, res) {
         fr_sl_map[key].sort();
       }
       // console.log(fr_sl_map);
-      res.render("finalResult", { fr_sl_map: fr_sl_map });
+      res.render("finalResult", { fr_sl_map: fr_sl_map, tsl: foundUser.tsl });
     }
   });
   // userAns = [];
