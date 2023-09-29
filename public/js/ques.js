@@ -4,7 +4,7 @@ function resetAllOptions() {
     const img = opt.querySelector("img");
     const option = opt.querySelector('input[type="hidden"]');
     
-    if (img == "img/Group4069.png") {
+    if (img.getAttribute('src') == "img/Group4069.png") {
       img.setAttribute("src", "img/Rectangle23.png");
       option.setAttribute("value", "grey");
     } 
