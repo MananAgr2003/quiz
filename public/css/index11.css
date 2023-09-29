@@ -243,6 +243,7 @@
     font-weight: 400;
     text-align: center;
     font-size: clamp(1rem, 1.52vw, 1.8rem);
+    cursor: pointer;
   }
   
   

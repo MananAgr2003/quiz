@@ -14,6 +14,22 @@ function resetAllOptions() {
     }
   });
 }
+function resetAllOptions1() {
+  const optionElements = document.querySelectorAll(".opt1");
+  optionElements.forEach((opt) => {
+    const img = opt.querySelector("img");
+    const option = opt.querySelector('input[type="hidden"]');
+    
+    if (img == "img/Group4069.png") {
+      img.setAttribute("src", "img/Rectangle23.png");
+      option.setAttribute("value", "grey");
+    } 
+    if (img.getAttribute('src') == "img/preintroboxgreen.png") {
+      img.setAttribute("src", "img/preintrobox.png");
+      option.setAttribute("value", "grey");
+    }
+  });
+}
 
 // refactoring all green1, green2, etc function
 function green(id) {
@@ -37,6 +53,21 @@ function pregreen(id) {
   const myimg = document.getElementById(`opt${id}-img`);
   const img = myimg.getAttribute("src");
   resetAllOptions();
+
+  if (img == "img/preintroboxgreen.png") {
+    myimg.setAttribute("src", "img/preintrobox.png");
+    myOption.setAttribute("value", "grey");
+  } else {
+    myimg.setAttribute("src", "img/preintroboxgreen.png");
+    myOption.setAttribute("value", "green");
+  }
+}
+function resgreen(id) {
+  const myOption = document.getElementById("option1" + id);
+  const optionValue = myOption.getAttribute("value");
+  const myimg = document.getElementById(`opt1${id}-img`);
+  const img = myimg.getAttribute("src");
+  resetAllOptions1();
 
   if (img == "img/preintroboxgreen.png") {
     myimg.setAttribute("src", "img/preintrobox.png");
