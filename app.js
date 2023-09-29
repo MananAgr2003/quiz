@@ -120,7 +120,7 @@ app.get("/ques", function (req, res) {
       }
     }
     else {
-      res.redirect("/ques1");
+      res.send("ERROR:No question found in the database.");
     }
   });
 });
