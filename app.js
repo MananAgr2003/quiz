@@ -25,10 +25,10 @@ const questionOptionSchema = mongoose.Schema({
   fr: String,
   sl: String,
   sr: String,
-  recommendations: {
-    people: [String],
-    process: [String],
-    technology: [String],
+  recommendation: {
+    people: String,
+    process: String,
+    technology: String,
   },
 });
 
@@ -54,6 +54,7 @@ const userSchema = mongoose.Schema({
   predicted_sl: String,
   loginId: String,
   loginPass: String,
+  sr_score:[Number],
   options: [optionSchema],
   recommendations: {
     people: [String],
@@ -131,103 +132,16 @@ app.get("/ques", function (req, res) {
     if (foundQues) {
       if (foundQues.is_multiple == true) {
         // skip  to next question
-        res.redirect("/ques?id=" + (+quesId + 1));
+        // res.redirect("/ques?id=" + (+quesId + 1));
+        res.render("question", { ques: foundQues, is_multiple: true });
       } else {
-        res.render("question", { ques: foundQues });
+        res.render("question", { ques: foundQues, is_multiple: false });
       }
     } else {
       res.send("ERROR:No question found in the database.");
     }
   });
 });
-
-// app.get("/ques1", function (req, res) {
-//   userAns = [];
-//   res.render("index8");
-// });
-// app.get("/ques2", function (req, res) {
-//   userAns = [];
-//   res.render("ques2");
-// });
-// app.get("/ques3", function (req, res) {
-//   userAns = [];
-//   res.render("ques3");
-// });
-// app.get("/ques4", function (req, res) {
-//   userAns = [];
-//   res.render("ques4");
-// });
-// app.get("/ques5", function (req, res) {
-//   userAns = [];
-//   res.render("ques5");
-// });
-// app.get("/ques6", function (req, res) {
-//   userAns = [];
-//   res.render("ques6");
-// });
-// app.get("/ques7", function (req, res) {
-//   userAns = [];
-//   res.render("ques7");
-// });
-// app.get("/ques8", function (req, res) {
-//   userAns = [];
-//   res.render("ques8");
-// });
-// app.get("/ques9", function (req, res) {
-//   userAns = [];
-//   res.render("ques9");
-// });
-// app.get("/ques10", function (req, res) {
-//   userAns = [];
-//   res.render("ques10");
-// });
-// app.get("/ques11", function (req, res) {
-//   userAns = [];
-//   res.render("ques11");
-// });
-// app.get("/ques12", function (req, res) {
-//   userAns = [];
-//   res.render("ques12");
-// });
-// app.get("/ques13", function (req, res) {
-//   userAns = [];
-//   res.render("ques13");
-// });
-
-// app.get("/ques14", function (req, res) {
-//   userAns = [];
-//   res.render("ques14");
-// });
-
-// app.get("/ques15", function (req, res) {
-//   userAns = [];
-//   res.render("ques15");
-// });
-
-// app.get("/ques16", function (req, res) {
-//   userAns = [];
-//   res.render("ques16");
-// });
-
-// app.get("/ques17", function (req, res) {
-//   userAns = [];
-//   res.render("ques17");
-// });
-
-// app.get("/ques18", function (req, res) {
-//   userAns = [];
-//   res.render("ques18");
-// });
-
-// app.get("/ques19", function (req, res) {
-//   userAns = [];
-//   res.render("ques19");
-// });
-
-// app.get("/ques20", function (req, res) {
-//   userAns = [];
-//   res.render("ques20");
-// });
 
 app.get("/quesFinalResult", function (req, res) {
   // Create a map of FR with an array of SL
@@ -252,18 +166,21 @@ app.get("/quesFinalResult", function (req, res) {
       });
       
       // Sort each array of SL mapped with a particular FR
+      var sl_achieved = [];
       for (let key in fr_sl_map) {
         fr_sl_map[key].sort();
+        sl_achieved.push(fr_sl_map[key][0]);
       }
-      
+      sl_achieved.sort();
       // Fetch recommendations from the user object
       const recommendations = foundUser.recommendations;
-      
       // Pass the fr_sl_map and recommendations to the template
       res.render("finalResult", {
         fr_sl_map: fr_sl_map,
         tsl: foundUser.tsl,
-        recommendations: recommendations,
+        recommendation: recommendations,
+        sr_score: foundUser.sr_score,
+        sl_achieved: sl_achieved[0]
       });
     }
   });
@@ -339,6 +256,7 @@ app.post("/login", function (req, res) {
               foundUser.recommendations.people = "Conduct perioding training for cybersecurity awareness";
               foundUser.recommendations.process = "Develop a Cyber Security Management Program (CSMS) to proactively identify, assess, and mitigate security risks";
               foundUser.recommendations.technology = "Implement strong access controls to prevent unauthorized access";
+              foundUser.sr_score = [0,0,0,0,0,0,0];
               foundUser.save(function (err) {
                 if (err) {
                   console.error("Error saving user:", err);
@@ -393,9 +311,44 @@ app.post("/ques", function (req, res) {
           max_sl = user_ans[i].sl;
         }
       }
-      // push this data into current user
+      //calculating score from sr values of user_ans array
+      let sr_score = 0;
+      for (let i = 0; i < user_ans.length; i++) {
+        sr_score += +user_ans[i].sr;
+      }
+      // maping FR1 to 0, FR2 to 1, FR3 to 2, FR4 to 3, FR5 to 4, FR6 to 5, FR7 to 6
+      const fr_map = {
+        FR1: 0,
+        FR2: 1,
+        FR3: 2,
+        FR4: 3,
+        FR5: 4,
+        FR6: 5,
+        FR7: 6,
+      };
+
+      //fetch process, people, technology from options of ques
+      var process = [];
+      var people = [];
+      var technology = [];
+      user_ans.forEach(function (ans) {
+        if(ans.recommendation.process.length > 0)process.push(ans.recommendation.process);
+        if(ans.recommendation.people.length > 0)people.push(ans.recommendation.people);
+        if(ans.recommendation.technology.length > 0)technology.push(ans.recommendation.technology);
+      });
+      //push these value into current user
       User.findOne({ loginId: loginUserName }, function (err, foundUser) {
         if (foundUser) {
+          process.forEach(function (p) {
+            foundUser.recommendations.process.push(p);
+          });
+          people.forEach(function (p) {
+            foundUser.recommendations.people.push(p);
+          });
+          technology.forEach(function (p) {
+            foundUser.recommendations.technology.push(p);
+          });
+          foundUser.sr_score[fr_map[foundQues.options[0].fr]] += sr_score;
           foundUser.options.push({
             question: quesId,
             options: user_ans,

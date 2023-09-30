@@ -46,6 +46,9 @@
             return [tsl_val, tsl_val, tsl_val, tsl_val, tsl_val, tsl_val, tsl_val]
         }
 
+        function get_user_sr_score(){
+            return [<%= sr_score %>];
+        }
 
     </script>
     <script src="js/radar_chart.js"></script>
@@ -92,7 +95,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="chart-SL" style="width: 300px;position: absolute;left:00px">
+            <div class="chart-SL" style="width: 350px;height:350px;position: absolute;left:00px">
                 <canvas id="chart-SL-canvas" style="background-color: transparent;"></canvas>
             </div>
         </div>
@@ -100,13 +103,13 @@
     </div>
     <div class="analysis2">
 
-        <p style="font-size: 45px;"> SL ACHIEVED / SL TARGET</p>
+        <p style="font-size: 45px;"> <%= sl_achieved %> / <%= tsl %></p>
         <p style="font-size: 12px; margin-top: 15px;">your overall security score</p>
         <div class="recres" id="people">
             <img src="/img/people.png" alt="" style="height: 75px;width: 65px;margin-top: 50px;">
             <p>
             <ul id="peopleRecommendations">
-                <% recommendations.people.forEach(function(recommendation) { %>
+                <% recommendation.people.forEach(function(recommendation) { %>
                     <li id="recres-p">
                         <%= recommendation %>
                     </li>
@@ -121,7 +124,7 @@
             <img src="/img/process.png" alt="" style="height: 75px;width: 75px;margin-top: 50px;">
             <p>
             <ul id="processRecommendations">
-                <% recommendations.process.forEach(function(recommendation) { %>
+                <% recommendation.process.forEach(function(recommendation) { %>
                     <li id="recres-p">
                         <%= recommendation %>
                     </li>
@@ -135,7 +138,7 @@
             <img src="/img/tech.png" alt="" style="height: 75px;width: 75px;margin-top: 50px;">
             <p>
             <ul id="technologyRecommendations">
-                <% recommendations.technology.forEach(function(recommendation) { %>
+                <% recommendation.technology.forEach(function(recommendation) { %>
                     <li id="recres-p">
                         <%= recommendation %>
                     </li>

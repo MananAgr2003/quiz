@@ -37,7 +37,6 @@ function green(id) {
   const optionValue = myOption.getAttribute("value");
   const myimg = document.getElementById(`opt${id}-img`);
   const img = myimg.getAttribute("src");
-  resetAllOptions();
 
   if (img == "img/Group4069.png") {
     myimg.setAttribute("src", "img/Rectangle23.png");
