@@ -25,6 +25,11 @@ const questionOptionSchema = mongoose.Schema({
   fr: String,
   sl: String,
   sr: String,
+  recommendations: {
+    people: [String],
+    process: [String],
+    technology: [String],
+  },
 });
 
 const optionSchema = mongoose.Schema({
@@ -33,6 +38,7 @@ const optionSchema = mongoose.Schema({
   // fr: String,
   // sr: String,
   options: [questionOptionSchema],
+ 
   
 });
 
