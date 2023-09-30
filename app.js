@@ -18,14 +18,13 @@ var sl = "";
 
 mongoose.connect("mongodb://0.0.0.0:27017/quiz");
 
-
 const questionOptionSchema = mongoose.Schema({
-  ques_id:Number,
-  op_id:String,
-  text:String,
-  fr:String,
-  sl:String,
-  sr:String
+  ques_id: Number,
+  op_id: String,
+  text: String,
+  fr: String,
+  sl: String,
+  sr: String,
 });
 
 const optionSchema = mongoose.Schema({
@@ -34,6 +33,7 @@ const optionSchema = mongoose.Schema({
   // fr: String,
   // sr: String,
   options: [questionOptionSchema],
+  
 });
 
 const Option = mongoose.model("Option", optionSchema);
@@ -44,21 +44,25 @@ const userSchema = mongoose.Schema({
   company: String,
   role: String,
   place: String,
-  tsl:String,
-  predicted_sl:String,
+  tsl: String,
+  predicted_sl: String,
   loginId: String,
   loginPass: String,
   options: [optionSchema],
+  recommendations: {
+    people: [String],
+    process: [String],
+    technology: [String],
+  },
   // options: [questionOptionSchema]
 });
-
 
 const questionSchema = mongoose.Schema({
   id: Number,
   ques_image: String,
   is_multiple: Boolean,
   sl_level: String,
-  options: [questionOptionSchema]
+  options: [questionOptionSchema],
 });
 
 const User = mongoose.model("User", userSchema);
@@ -99,7 +103,7 @@ app.get("/preintro1", function (req, res) {
 app.get("/preintrores", function (req, res) {
   // fetch predicted_sl of current user
   User.findOne({ loginId: loginUserName }, function (err, foundUser) {
-    if(foundUser){
+    if (foundUser) {
       res.render("preintrores", { predicted_sl: foundUser.predicted_sl });
     }
   });
@@ -119,14 +123,13 @@ app.get("/ques", function (req, res) {
   const quesId = req.query.id;
   Question.findOne({ id: quesId }, function (err, foundQues) {
     if (foundQues) {
-      if(foundQues.is_multiple == true){
+      if (foundQues.is_multiple == true) {
         // skip  to next question
-        res.redirect("/ques?id=" + (+quesId+1));
-      }else{
+        res.redirect("/ques?id=" + (+quesId + 1));
+      } else {
         res.render("question", { ques: foundQues });
       }
-    }
-    else {
+    } else {
       res.send("ERROR:No question found in the database.");
     }
   });
@@ -221,27 +224,45 @@ app.get("/ques", function (req, res) {
 // });
 
 app.get("/quesFinalResult", function (req, res) {
-  // create a map of fr with array of sl
-  const fr_sl_map = {"FR1":[],"FR2":[],"FR3":[],"FR4":[],"FR5":[],"FR6":[],"FR7":[]};
+  // Create a map of FR with an array of SL
+  const fr_sl_map = {
+    FR1: [],
+    FR2: [],
+    FR3: [],
+    FR4: [],
+    FR5: [],
+    FR6: [],
+    FR7: [],
+  };
+  
+  // Find the user by loginId
   User.findOne({ loginId: loginUserName }, function (err, foundUser) {
-    if(foundUser){
+    if (foundUser) {
+      // Iterate through options to populate the fr_sl_map
       foundUser.options.forEach(function (option) {
         option.options.forEach(function (op) {
-          // console.log(op.fr, op.sl);
           fr_sl_map[op.fr].push(op.sl);
         });
       });
-      //sort each array of sl mapped with particular fr
-      for(let key in fr_sl_map){
+      
+      // Sort each array of SL mapped with a particular FR
+      for (let key in fr_sl_map) {
         fr_sl_map[key].sort();
       }
-      // console.log(fr_sl_map);
-      res.render("finalResult", { fr_sl_map: fr_sl_map, tsl: foundUser.tsl });
+      
+      // Fetch recommendations from the user object
+      const recommendations = foundUser.recommendations;
+      
+      // Pass the fr_sl_map and recommendations to the template
+      res.render("finalResult", {
+        fr_sl_map: fr_sl_map,
+        tsl: foundUser.tsl,
+        recommendations: recommendations,
+      });
     }
   });
-  // userAns = [];
-  // res.render("finalResult", { SLlevel: slArr, sl: sortedsl[0] });
 });
+
 
 // Register code
 app.post("/register", function (req, res) {
@@ -269,7 +290,6 @@ app.post("/register", function (req, res) {
   }
 });
 
-
 // Change password
 app.post("/cngPw", (req, res) => {
   if (req.body.password == req.body.repass) {
@@ -295,8 +315,9 @@ app.post("/cngPw", (req, res) => {
   }
 });
 
-
 // Login
+
+
 app.post("/login", function (req, res) {
   loginUserName = req.body.userId;
   User.findOne({ loginId: req.body.userId }, function (err, foundUser) {
@@ -306,46 +327,63 @@ app.post("/login", function (req, res) {
         foundUser.loginPass,
         function (err, result) {
           if (result == true) {
-            res.redirect("/preintro1");
+            // User is found and password is correct
+            // Check if recommendations.people is empty, and if so, push default values
+            if (foundUser.recommendations.people.length === 0) {
+              foundUser.recommendations.people = "Conduct perioding training for cybersecurity awareness";
+              foundUser.recommendations.process = "Develop a Cyber Security Management Program (CSMS) to proactively identify, assess, and mitigate security risks";
+              foundUser.recommendations.technology = "Implement strong access controls to prevent unauthorized access";
+              foundUser.save(function (err) {
+                if (err) {
+                  console.error("Error saving user:", err);
+                }
+                // Redirect to the desired page after login
+                res.redirect("/preintro1");
+              });
+            } else {
+              // Redirect to the desired page after login
+              res.redirect("/preintro1");
+            }
           } else {
+            // Password is incorrect, redirect to login
             res.redirect("/login");
           }
         }
       );
     } else {
+      // User not found, redirect to login
       res.redirect("/login");
     }
   });
 });
 
 app.post("/ques", function (req, res) {
-  
   const quesId = req.query.id;
   const user_ans = [];
   Question.findOne({ id: quesId }, function (err, foundQues) {
     if (foundQues) {
-      if(req.body.option1 == "green"){
+      if (req.body.option1 == "green") {
         user_ans.push(foundQues.options[0]);
       }
-      if(req.body.option2 == "green"){
+      if (req.body.option2 == "green") {
         user_ans.push(foundQues.options[1]);
       }
-      if(req.body.option3 == "green"){
+      if (req.body.option3 == "green") {
         user_ans.push(foundQues.options[2]);
       }
-      if(req.body.option4 == "green"){
+      if (req.body.option4 == "green") {
         user_ans.push(foundQues.options[3]);
       }
-      if(req.body.option5 == "green"){
+      if (req.body.option5 == "green") {
         user_ans.push(foundQues.options[4]);
       }
-      if(req.body.option6 == "green"){
+      if (req.body.option6 == "green") {
         user_ans.push(foundQues.options[5]);
       }
       //find max sl value from user_ans array
       let max_sl = "SL0";
-      for(let i=0; i<user_ans.length; i++){
-        if(user_ans[i].sl > max_sl){
+      for (let i = 0; i < user_ans.length; i++) {
+        if (user_ans[i].sl > max_sl) {
           max_sl = user_ans[i].sl;
         }
       }
@@ -354,84 +392,83 @@ app.post("/ques", function (req, res) {
         if (foundUser) {
           foundUser.options.push({
             question: quesId,
-            options: user_ans
+            options: user_ans,
           });
           foundUser.save();
         }
       });
-      if(+quesId == 39){
+      if (+quesId == 39) {
         res.redirect("/quesFinalResult");
-      }
-      else if(+quesId == 33){
+      } else if (+quesId == 33) {
         res.redirect("/ques?id=35");
-      }
-      else if(+quesId == 102){
+      } else if (+quesId == 102) {
         // fetch options of ques with id 100,101,102
         User.findOne({ loginId: loginUserName }, function (err, foundUser) {
           const sl_values = [];
           foundUser.options.forEach(function (option) {
-            if(option.question == 100 || option.question == 101 || option.question == 102){
+            if (
+              option.question == 100 ||
+              option.question == 101 ||
+              option.question == 102
+            ) {
               option.options.forEach(function (op) {
                 sl_values.push(op.sl);
               });
             }
           });
-          sl_values.push(user_ans[0].sl)
+          sl_values.push(user_ans[0].sl);
           sl_values.sort();
           console.log(sl_values);
           //save last element of sl_values to predicted_sl of current user
           User.findOneAndUpdate(
             { loginId: loginUserName },
-            { predicted_sl: sl_values[sl_values.length-1] },
+            { predicted_sl: sl_values[sl_values.length - 1] },
             function (err, fUser) {
-              res.redirect("/preintrores")
+              res.redirect("/preintrores");
             }
           );
         });
-
-      }
-      else{
+      } else {
         // console.log("max_sl", max_sl, "quesId", +quesId+1);
-        res.redirect(`/ques?id=${+quesId+1}`)
+        res.redirect(`/ques?id=${+quesId + 1}`);
         // res.render("questionSL.ejs", { max_sl: max_sl, ques: +quesId+1 });
       }
     }
   });
 
   app.post("/preintrores", function (req, res) {
-    if(req.body.option1 == "green"){
+    if (req.body.option1 == "green") {
       const usr_tsl = req.body.predicted_sl;
       User.findOneAndUpdate(
         { loginId: loginUserName },
         { tsl: usr_tsl },
         function (err, fUser) {
-          res.redirect("/intro1")
+          res.redirect("/intro1");
         }
       );
     }
-    if(req.body.option3=="green"){
+    if (req.body.option3 == "green") {
       var usr_tsl = "";
-      if(req.body.SL1=="green"){
+      if (req.body.SL1 == "green") {
         usr_tsl = "SL1";
       }
-      if(req.body.SL2=="green"){
+      if (req.body.SL2 == "green") {
         usr_tsl = "SL2";
       }
-      if(req.body.SL3=="green"){
+      if (req.body.SL3 == "green") {
         usr_tsl = "SL3";
       }
-      if(req.body.SL4=="green"){
+      if (req.body.SL4 == "green") {
         usr_tsl = "SL4";
       }
       User.findOneAndUpdate(
         { loginId: loginUserName },
         { tsl: usr_tsl },
         function (err, fUser) {
-          res.redirect("/intro1")
+          res.redirect("/intro1");
         }
       );
     }
-
   });
   // if (req.body.optifoundQues1 == "green") {
   //   if ("SL0" > sl) {
@@ -627,7 +664,6 @@ app.post("/ques3", function (req, res) {
   }
 });
 
-
 //question 4 post
 app.post("/ques4", function (req, res) {
   if (req.body.option1 == "green") {
@@ -687,7 +723,6 @@ app.post("/ques4", function (req, res) {
   }
 });
 
-
 //question 5 post
 app.post("/ques5", function (req, res) {
   if (req.body.option1 == "green") {
@@ -729,7 +764,6 @@ app.post("/ques5", function (req, res) {
   });
 
   res.render("questionSL.ejs", { sl: sl, ques: 6 });
-
 
   sl = "";
 
@@ -810,7 +844,7 @@ app.post("/ques6", function (req, res) {
   }
 });
 
-// Question 7 post 
+// Question 7 post
 app.post("/ques7", function (req, res) {
   if (req.body.option1 == "green") {
     if ("SL1" > sl) {
@@ -932,7 +966,6 @@ app.post("/ques8", function (req, res) {
     score++;
   }
 });
-
 
 // ques 9 post
 app.post("/ques9", function (req, res) {
@@ -1178,7 +1211,6 @@ app.post("/ques12", function (req, res) {
   }
 });
 
-
 //ques 13 post
 app.post("/ques13", function (req, res) {
   if (req.body.option1 == "green") {
@@ -1233,14 +1265,12 @@ app.post("/ques13", function (req, res) {
         foundUser.save();
       }
     }
-  ); 
+  );
 
   if (JSON.stringify(userAns) == JSON.stringify(ques1Ans)) {
     score++;
   }
 });
-
-
 
 //ques 14 post
 app.post("/ques14", function (req, res) {
@@ -1293,7 +1323,6 @@ app.post("/ques14", function (req, res) {
     score++;
   }
 });
-
 
 //ques 15 post
 app.post("/ques15", function (req, res) {
@@ -1410,7 +1439,6 @@ app.post("/ques16", function (req, res) {
     score++;
   }
 });
-
 
 //ques 17 post
 app.post("/ques17", function (req, res) {
@@ -1606,7 +1634,7 @@ app.post("/ques20", function (req, res) {
     opt: userAns,
   });
 
-  res.render("questionSL.ejs", { sl: sl, ques: 'finalResult' });
+  res.render("questionSL.ejs", { sl: sl, ques: "finalResult" });
 
   sl = "";
 

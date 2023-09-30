@@ -49,12 +49,13 @@ document.addEventListener('DOMContentLoaded', function() {
             scales: {
                 r: {
                     angleLines: {
-                        display: false
+                        display: true
                     },
                     suggestedMin: 0,
                     suggestedMax: 4,
                     ticks: {
-                        stepSize: 1
+                        stepSize: 1,
+                        color: 'rgba(255, 255, 255, 1)', // White font color
                     }
                 }
             }

@@ -12,39 +12,41 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
         // intializing the map of FRs and SLs
-        function get_sl_values_data(){
+        function get_sl_values_data() {
             var sl_values = {
-                    "SL0": 0,
-                    "SL1": 1,
-                    "SL2": 2,
-                    "SL3": 3,   
-                    "SL4": 4,
-                    "":0
-                };
+                "SL0": 0,
+                "SL1": 1,
+                "SL2": 2,
+                "SL3": 3,
+                "SL4": 4,
+                "": 0
+            };
             var usr_data = [
                 sl_values["<%= fr_sl_map["FR1"][0] %>"],
                 sl_values["<%= fr_sl_map["FR2"][0] %>"],
-                sl_values["<%= fr_sl_map["FR3"][0] %>"],
-                sl_values["<%= fr_sl_map["FR4"][0] %>"],
-                sl_values["<%= fr_sl_map["FR5"][0] %>"],
-                sl_values["<%= fr_sl_map["FR6"][0] %>"],
-                sl_values["<%= fr_sl_map["FR7"][0] %>"]
+            sl_values["<%= fr_sl_map["FR3"][0] %>"],
+            sl_values["<%= fr_sl_map["FR4"][0] %>"],
+            sl_values["<%= fr_sl_map["FR5"][0] %>"],
+            sl_values["<%= fr_sl_map["FR6"][0] %>"],
+            sl_values["<%= fr_sl_map["FR7"][0] %>"]
             ];
             return usr_data;
         }
 
-        function get_tsl_data(){
+        function get_tsl_data() {
             var sl_values = {
-                    "SL0": 0,
-                    "SL1": 1,
-                    "SL2": 2,
-                    "SL3": 3,   
-                    "SL4": 4,
-                    "":0
+                "SL0": 0,
+                "SL1": 1,
+                "SL2": 2,
+                "SL3": 3,
+                "SL4": 4,
+                "": 0
             };
             tsl_val = sl_values["<%= tsl %>"]
-            return [tsl_val,tsl_val,tsl_val,tsl_val,tsl_val,tsl_val,tsl_val]
+            return [tsl_val, tsl_val, tsl_val, tsl_val, tsl_val, tsl_val, tsl_val]
         }
+
+
     </script>
     <script src="js/radar_chart.js"></script>
     <title>Quiz</title>
@@ -54,32 +56,102 @@
 
 
     <div id="txt">
-        <p>Cybersecurity Analysis</p>
+        <p>Cybersecurity Self Assessment Outcome</p>
     </div>
     <div class="analysis">
         <div class="questionWiseSL">
             <div class="quesResult">
                 <ul>
-                    <li>FR 1 : <%= fr_sl_map["FR1"][0] %></li>
-                    <li>FR 2 : <%= fr_sl_map["FR2"][0] %></li>
-                    <li>FR 3 : <%= fr_sl_map["FR3"][0] %></li>
-                    <li>FR 4 : <%= fr_sl_map["FR4"][0] %></li>
-                    <li>FR 5 : <%= fr_sl_map["FR5"][0] %></li>
-                    <li>FR 6 : <%= fr_sl_map["FR6"][0] %></li>
-                    <li>FR 7 : <%= fr_sl_map["FR7"][0] %></li>
+                    <!-- <li>FR 1 : <%= fr_sl_map["FR1"][0] %>
+                    </li>
+                    <li>FR 2 : <%= fr_sl_map["FR2"][0] %>
+                    </li>
+                    <li>FR 3 : <%= fr_sl_map["FR3"][0] %>
+                    </li>
+                    <li>FR 4 : <%= fr_sl_map["FR4"][0] %>
+                    </li>
+                    <li>FR 5 : <%= fr_sl_map["FR5"][0] %>
+                    </li>
+                    <li>FR 6 : <%= fr_sl_map["FR6"][0] %>
+                    </li>
+                    <li>FR 7 : <%= fr_sl_map["FR7"][0] %>
+                    </li> -->
+                    <li>FR 1 : IAC - Identification and Access Control
+                    </li>
+                    <li>FR 2 : UC-Use Control
+                    </li>
+                    <li>FR 3 : SI- System Integrity
+                    </li>
+                    <li>FR 4 : DC - Data Confidentiality
+                    </li>
+                    <li>FR 5 : RDF - Restrict Data Flow
+                    </li>
+                    <li>FR 6 : TRE- Timely Response to Events
+                    </li>
+                    <li>FR 7 : RA- Response Availability
+                    </li>
                 </ul>
             </div>
-            <div class="chart-SL" style="width: 300px;position: absolute;right:-400px">
-                <canvas id="chart-SL-canvas" style="background-color: white;"></canvas>
+            <div class="chart-SL" style="width: 300px;position: absolute;left:00px">
+                <canvas id="chart-SL-canvas" style="background-color: transparent;"></canvas>
             </div>
         </div>
 
     </div>
+    <div class="analysis2">
 
-    <div id="btn"><a href="/" role="button"><img src="img/Group2142.png" alt=""></a></div>
-    <script>
+        <p style="font-size: 45px;"> SL ACHIEVED / SL TARGET</p>
+        <p style="font-size: 12px; margin-top: 15px;">your overall security score</p>
+        <div class="recres" id="people">
+            <img src="/img/people.png" alt="" style="height: 75px;width: 65px;margin-top: 50px;">
+            <p>
+            <ul id="peopleRecommendations">
+                <% recommendations.people.forEach(function(recommendation) { %>
+                    <li id="recres-p">
+                        <%= recommendation %>
+                    </li>
+                    <% }); %>
 
-    </script>
+            </ul>
+            </p>
+
+
+        </div>
+        <div class="recres" id="process">
+            <img src="/img/process.png" alt="" style="height: 75px;width: 75px;margin-top: 50px;">
+            <p>
+            <ul id="processRecommendations">
+                <% recommendations.process.forEach(function(recommendation) { %>
+                    <li id="recres-p">
+                        <%= recommendation %>
+                    </li>
+                    <% }); %>
+
+            </ul>
+            </p>
+
+        </div>
+        <div class="recres" id="technology">
+            <img src="/img/tech.png" alt="" style="height: 75px;width: 75px;margin-top: 50px;">
+            <p>
+            <ul id="technologyRecommendations">
+                <% recommendations.technology.forEach(function(recommendation) { %>
+                    <li id="recres-p">
+                        <%= recommendation %>
+                    </li>
+                    <% }); %>
+
+            </ul>
+            </p>
+
+
+        </div>
+
+    </div>
+
+    <div id="btn"><a href="/" role="button"><img src="img/finalbtn.png" alt="" style="height: 80px;width: 250px;"></a>
+    </div>
+
 </body>
 
 </html>
