@@ -33,11 +33,12 @@ function resetAllOptions1() {
 
 // refactoring all green1, green2, etc function
 function green(id) {
+  
   const myOption = document.getElementById("option" + id);
   const optionValue = myOption.getAttribute("value");
   const myimg = document.getElementById(`opt${id}-img`);
   const img = myimg.getAttribute("src");
-
+  
   if (img == "img/Group4069.png") {
     myimg.setAttribute("src", "img/Rectangle23.png");
     myOption.setAttribute("value", "grey");
@@ -45,6 +46,32 @@ function green(id) {
     myimg.setAttribute("src", "img/Group4069.png");
     myOption.setAttribute("value", "green");
   }
+  var option_str = "";
+  for(var i=1; i<=6; i++){
+    const op_value = document.getElementById("option" + i)?.getAttribute("value");
+    if(op_value == "green"){
+      option_str += i.toString();
+    }
+  }
+  allowed_options = get_list_of_allowed_options();
+  console.log(option_str, allowed_options);
+  var allowed = false;
+  for(var i=1;i<=allowed_options.length;i++){
+    if(option_str == allowed_options[i-1]){
+      allowed = true;
+      break;
+    }
+  }
+  if(!allowed){
+    myOption.setAttribute("value", optionValue);
+    if(optionValue=="green"){
+      myimg.setAttribute("src", "img/Group4069.png");
+    }else{
+      myimg.setAttribute("src", "img/Rectangle23.png");
+    }
+    alert("Selecting this option is contradictory to your previous selections. ");
+  }
+
 }
 function pregreen(id) {
   const myOption = document.getElementById("option" + id);
