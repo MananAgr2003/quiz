@@ -262,11 +262,11 @@ app.post("/login", function (req, res) {
                   console.error("Error saving user:", err);
                 }
                 // Redirect to the desired page after login
-                res.redirect("/preintro1");
+                res.redirect("/intro1");
               });
             } else {
               // Redirect to the desired page after login
-              res.redirect("/preintro1");
+              res.redirect("/intro1");
             }
           } else {
             // Password is incorrect, redirect to login
@@ -402,7 +402,7 @@ app.post("/ques", function (req, res) {
         { loginId: loginUserName },
         { tsl: usr_tsl },
         function (err, fUser) {
-          res.redirect("/intro1");
+          res.redirect("/ques?id=1");
         }
       );
     }
@@ -424,7 +424,7 @@ app.post("/ques", function (req, res) {
         { loginId: loginUserName },
         { tsl: usr_tsl },
         function (err, fUser) {
-          res.redirect("/intro1");
+          res.redirect("/ques?id=1");
         }
       );
     }
