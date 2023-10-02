@@ -79,19 +79,19 @@
                     </li>
                     <li>FR 7 : <%= fr_sl_map["FR7"][0] %>
                     </li> -->
-                    <li>FR 1 : IAC - Identification and Access Control
+                    <li>IAC - Identification and Access Control
                     </li>
-                    <li>FR 2 : UC-Use Control
+                    <li>UC-Use Control
                     </li>
-                    <li>FR 3 : SI- System Integrity
+                    <li>SI- System Integrity
                     </li>
-                    <li>FR 4 : DC - Data Confidentiality
+                    <li>DC - Data Confidentiality
                     </li>
-                    <li>FR 5 : RDF - Restrict Data Flow
+                    <li>RDF - Restrict Data Flow
                     </li>
-                    <li>FR 6 : TRE- Timely Response to Events
+                    <li>TRE- Timely Response to Events
                     </li>
-                    <li>FR 7 : RA- Response Availability
+                    <li>RA- Response Availability
                     </li>
                 </ul>
             </div>
@@ -103,14 +103,16 @@
     </div>
     <div class="analysis2">
 
-        <p style="font-size: 45px;"> <%= sl_achieved %> / <%= tsl %></p>
+        <p style="font-size: 45px;"> <%= sl_achieved %> / <%= tsl %> <img src="/img/smiley.png" style="height: 40px;width: 40px;margin-left: 20px;" alt=""></p>
+        <p style="font-size:18px;"> (SL Achieved / target SL )</p>
         <p style="font-size: 12px; margin-top: 15px;">your overall security score</p>
+        <p style="font-size: 18px; margin-top: 25px;">What This Score Means To You?</p>
         <div class="recres" id="people">
-            <img src="/img/people.png" alt="" style="height: 75px;width: 65px;margin-top: 50px;">
+            <img src="/img/people.png" alt="" style="height: 75px;width: 65px;margin-top: 10px;">
             <p>
             <ul id="peopleRecommendations">
                 <% recommendation.people.forEach(function(recommendation) { %>
-                    <li id="recres-p">
+                    <li id="recres-p" style="top: 15px;">
                         <%= recommendation %>
                     </li>
                     <% }); %>

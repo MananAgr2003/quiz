@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const usr_sr_score = get_user_sr_score();
     const final_score = [0,0,0,0,0,0,0];
     for(let i=0; i<7; i++){
-        final_score[i] = "FR"+i.toString()+" "+Math.floor((usr_sr_score[i]/total_sr[i])*100).toString() + "%";
+        final_score[i] = Math.floor((usr_sr_score[i]/total_sr[i])*100).toString() + "%";
     }
     const usr_data = get_sl_values_data();
     const tsl = get_tsl_data();
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var chart = new Chart(ctx, {
         type: 'radar',
         data: {
-            labels: final_score,
+            labels: ["IAC " + final_score[0] , "UC " + final_score[1] ,"SI " + final_score[2] ,"DC " + final_score[3],"RDF " + final_score[4],"TRE " + final_score[5],"RA " + final_score[6] ],
             borderColor:'white',
             datasets: [
                 {
@@ -32,10 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 label: 'SL-Achieved',
                 data:usr_data,
                 backgroundColor: [
-                    'rgba(237,125,49,0)',
+                    'rgba(0,152,128, 0.5)',
                 ],
                 borderColor: [
-                    'rgb(237,125,49)',
+                    'rgba(0,152,128, 1)',
                 ],
                 borderWidth: 1
             },
@@ -61,13 +61,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     grid: {
                         color: 'rgba(255, 255, 255, 1)',
                     },
-                    suggestedMin: 0,
+                    suggestedMin: -1,
                     suggestedMax: 4,
                     ticks: {
                         stepSize: 1,
                         color: 'white', // White font color
                         backdropColor:'transparent',
-                        fontSize: 20
+                        fontSize: 20,
+                        callback: (val) => {
+                            return 'SL' + val;}
+                        
                     }
                 }
             }
