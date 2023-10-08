@@ -16,7 +16,7 @@ var score = 0;
 
 var sl = "";
 
-mongoose.connect("mongodb://0.0.0.0:27017/quiz");
+mongoose.connect("mongodb+srv://mananmyphotos2:12312312@quizapp.fi0ycwt.mongodb.net/quiz");
 
 const questionOptionSchema = mongoose.Schema({
   ques_id: Number,
@@ -438,5 +438,5 @@ if (port == null || port == "") {
 }
 
 app.listen(port, function () {
-  console.log("Server started on port 3000");
+  console.log(`Server started on port ${port}`);
 });

@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Londrina+Solid&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styleResult.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
     <script>
         // intializing the map of FRs and SLs
         function get_sl_values_data() {
@@ -46,26 +47,29 @@
             return [tsl_val, tsl_val, tsl_val, tsl_val, tsl_val, tsl_val, tsl_val]
         }
 
-        function get_user_sr_score(){
+        function get_user_sr_score() {
             return [<%= sr_score %>];
         }
 
     </script>
     <script src="js/radar_chart.js"></script>
+    <script src="js/pdf.js"></script>
     <title>Quiz</title>
 </head>
 
 <body>
 
 
-    <div id="txt">
-        <p>Cybersecurity Self Assessment Outcome</p>
-    </div>
-    <div class="analysis">
-        <div class="questionWiseSL">
-            <div class="quesResult">
-                <ul>
-                    <!-- <li>FR 1 : <%= fr_sl_map["FR1"][0] %>
+    <div id="download-content">
+
+        <div id="txt">
+            <p>Cybersecurity Self Assessment Outcome</p>
+        </div>
+        <div class="analysis">
+            <div class="questionWiseSL">
+                <div class="quesResult">
+                    <ul>
+                        <!-- <li>FR 1 : <%= fr_sl_map["FR1"][0] %>
                     </li>
                     <li>FR 2 : <%= fr_sl_map["FR2"][0] %>
                     </li>
@@ -79,82 +83,86 @@
                     </li>
                     <li>FR 7 : <%= fr_sl_map["FR7"][0] %>
                     </li> -->
-                    <li>IAC - Identification and Access Control
-                    </li>
-                    <li>UC-Use Control
-                    </li>
-                    <li>SI- System Integrity
-                    </li>
-                    <li>DC - Data Confidentiality
-                    </li>
-                    <li>RDF - Restrict Data Flow
-                    </li>
-                    <li>TRE- Timely Response to Events
-                    </li>
-                    <li>RA- Response Availability
-                    </li>
+                        <li>IAC - Identification and Access Control
+                        </li>
+                        <li>UC-Use Control
+                        </li>
+                        <li>SI- System Integrity
+                        </li>
+                        <li>DC - Data Confidentiality
+                        </li>
+                        <li>RDF - Restrict Data Flow
+                        </li>
+                        <li>TRE- Timely Response to Events
+                        </li>
+                        <li>RA- Response Availability
+                        </li>
+                    </ul>
+                </div>
+                <div class="chart-SL" style="width: 350px;height:350px;position: absolute;left:50px;top: -40px;">
+                    <canvas id="chart-SL-canvas" style="background-color: transparent;"></canvas>
+                </div>
+            </div>
+
+        </div>
+        <div class="analysis2 html2pdf__page-break">
+            <p style="font-size: 45px;">
+                <%= sl_achieved %> / <%= tsl %> <img src="/img/smiley.png"
+                            style="height: 40px;width: 40px;margin-left: 20px;" alt="">
+            </p>
+            <p style="font-size:18px;"> (SL Achieved / target SL )</p>
+            <p style="font-size: 12px; margin-top: 15px;">your overall security score</p>
+            <p style="font-size: 18px; margin-top: 25px;">What This Score Means To You?</p>
+            <div class="recres" id="people">
+                <img src="/img/people.png" alt="" style="height: 75px;width: 65px;margin-top: 10px;">
+                <p>
+                <ul id="peopleRecommendations">
+                    <% recommendation.people.forEach(function(recommendation) { %>
+                        <li id="recres-p" style="top: 15px;">
+                            <%= recommendation %>
+                        </li>
+                        <% }); %>
+
                 </ul>
+                </p>
+
+
             </div>
-            <div class="chart-SL" style="width: 350px;height:350px;position: absolute;left:50px;top: -40px;">
-                <canvas id="chart-SL-canvas" style="background-color: transparent;"></canvas>
+            <div class="recres" id="process">
+                <img src="/img/process.png" alt="" style="height: 75px;width: 75px;margin-top: 50px;">
+                <p>
+                <ul id="processRecommendations">
+                    <% recommendation.process.forEach(function(recommendation) { %>
+                        <li id="recres-p">
+                            <%= recommendation %>
+                        </li>
+                        <% }); %>
+
+                </ul>
+                </p>
+
             </div>
-        </div>
+            <div class="recres" id="technology">
+                <img src="/img/tech.png" alt="" style="height: 75px;width: 75px;margin-top: 50px;">
+                <p>
+                <ul id="technologyRecommendations">
+                    <% recommendation.technology.forEach(function(recommendation) { %>
+                        <li id="recres-p">
+                            <%= recommendation %>
+                        </li>
+                        <% }); %>
 
-    </div>
-    <div class="analysis2">
+                </ul>
+                </p>
 
-        <p style="font-size: 45px;"> <%= sl_achieved %> / <%= tsl %> <img src="/img/smiley.png" style="height: 40px;width: 40px;margin-left: 20px;" alt=""></p>
-        <p style="font-size:18px;"> (SL Achieved / target SL )</p>
-        <p style="font-size: 12px; margin-top: 15px;">your overall security score</p>
-        <p style="font-size: 18px; margin-top: 25px;">What This Score Means To You?</p>
-        <div class="recres" id="people">
-            <img src="/img/people.png" alt="" style="height: 75px;width: 65px;margin-top: 10px;">
-            <p>
-            <ul id="peopleRecommendations">
-                <% recommendation.people.forEach(function(recommendation) { %>
-                    <li id="recres-p" style="top: 15px;">
-                        <%= recommendation %>
-                    </li>
-                    <% }); %>
 
-            </ul>
-            </p>
-
+            </div>
 
         </div>
-        <div class="recres" id="process">
-            <img src="/img/process.png" alt="" style="height: 75px;width: 75px;margin-top: 50px;">
-            <p>
-            <ul id="processRecommendations">
-                <% recommendation.process.forEach(function(recommendation) { %>
-                    <li id="recres-p">
-                        <%= recommendation %>
-                    </li>
-                    <% }); %>
-
-            </ul>
-            </p>
-
-        </div>
-        <div class="recres" id="technology">
-            <img src="/img/tech.png" alt="" style="height: 75px;width: 75px;margin-top: 50px;">
-            <p>
-            <ul id="technologyRecommendations">
-                <% recommendation.technology.forEach(function(recommendation) { %>
-                    <li id="recres-p">
-                        <%= recommendation %>
-                    </li>
-                    <% }); %>
-
-            </ul>
-            </p>
-
-
-        </div>
-
     </div>
 
-    <div id="btn"><a href="/" role="button"><img src="img/finalbtn.png" alt="" style="height: 80px;width: 250px;"></a>
+    <div id="btn"><button role="button" id="download"><img src="img/downloadbtn.png" alt=""
+                style="height: 80px;width: 250px;"></button>
     </div>
 
 </body>
