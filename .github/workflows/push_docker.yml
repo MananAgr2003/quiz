@@ -1,0 +1,29 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 19
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{secrets.DOCKERHUB_USERNAME }}/quiz-app:latest .
+
+      - name: Login to Docker Hub
+        run: docker login -u "${{secrets.DOCKER_USERNAME}}" -p "${{ secrets.DOCKERHUB_PASSWORD }}"
+
+      - name: Push Docker image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/quiz-app:latest
