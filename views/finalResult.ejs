@@ -53,11 +53,12 @@
 
     </script>
     <script src="js/radar_chart.js"></script>
+    <script src="js/radar_chart2.js"></script>
     <script src="js/pdf.js"></script>
     <title>Quiz</title>
 </head>
 
-<body>
+<body style="overflow-x: hidden;">
 
 
     <div id="download-content">
@@ -158,12 +159,109 @@
 
             </div>
 
+            <div id="Result-Pdf" style="position: relative;left: 800px;">
+
+                <h2>IEC 62443 Cybersecurity Assessment Report</h2>
+                <br><br>
+                <h1>Your Overall Cybersecurity Score</h1>
+                <br>
+                <h3>Security Level Achieved: <%= sl_achieved %>
+                </h3>
+                <h3>Security Level Target: <%= tsl %>
+                </h3>
+                <br>
+                <h2>What This Score Means To You?</h2>
+                <br>
+                <h4>People</h4>
+                <div class="recres" id="people">
+                    <img src="/img/people.png" alt="" style="height: 75px;width: 75px;margin-top: 10px;">
+                    <p>
+                    <ul id="peopleRecommendations">
+                        <% recommendation.people.forEach(function(recommendation) { %>
+                            <li id="recres-p" style="top: 15px;">
+                                <%= recommendation %>
+                            </li>
+                            <% }); %>
+        
+                    </ul>
+                    </p>
+        
+        
+                </div>
+                <br>
+                <h4>Process</h4>
+                <div class="recres" id="process">
+                    <img src="/img/process.png" alt="" style="height: 75px;width: 75px;margin-top: 40px;">
+                    <p>
+                    <ul id="processRecommendations">
+                        <% recommendation.process.forEach(function(recommendation) { %>
+                            <li id="recres-p">
+                                <%= recommendation %>
+                            </li>
+                            <% }); %>
+        
+                    </ul>
+                    </p>
+        
+                </div>
+                <br>
+                <h4>Technology</h4>
+                <div class="recres" id="technology">
+                    <img src="/img/tech.png" alt="" style="height: 75px;width: 75px;margin-top: 40px;">
+                    <p>
+                    <ul id="technologyRecommendations">
+                        <% recommendation.technology.forEach(function(recommendation) { %>
+                            <li id="recres-p">
+                                <%= recommendation %>
+                            </li>
+                            <% }); %>
+        
+                    </ul>
+                    </p>
+        
+        
+                </div>
+                <br>
+                <h2>Below is the graph to represent the SL level and the SR% achieved in various FRs.</h2>
+                <br>
+        
+                <div class="chart-SL" style="width: 350px;height:350px;background-color: black;">
+                    <canvas id="chart-SL-canvas1" style="background-color: transparent;"></canvas>
+                </div>
+                <br>
+                <h2>FRs are listed below for better understanding and mapping</h2>
+                <br>
+                <ul>
+        
+                    <li>IAC - Identification and Access Control
+                    </li>
+                    <li>UC-Use Control
+                    </li>
+                    <li>SI- System Integrity
+                    </li>
+                    <li>DC - Data Confidentiality
+                    </li>
+                    <li>RDF - Restrict Data Flow
+                    </li>
+                    <li>TRE- Timely Response to Events
+                    </li>
+                    <li>RA- Response Availability
+                    </li>
+                </ul>
+        
+        
+        
+        
+            </div>
+
         </div>
     </div>
 
     <div id="btn"><button role="button" id="download"><img src="img/downloadbtn.png" alt=""
                 style="height: 80px;width: 250px;"></button>
     </div>
+
+   
 
 </body>
 

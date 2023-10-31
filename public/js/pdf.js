@@ -1,5 +1,5 @@
 window.onload = function () {
-    const page = document.body;
+    const page = document.getElementById("Result-Pdf");
 
 
     document.getElementById("download")
